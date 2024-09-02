@@ -74,6 +74,7 @@ class Item(models.Model):
     descripcion = models.TextField(max_length=200, null=True)
     valorUnitario = models.IntegerField(null=False)
     codigoProducto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, null=True)
+    stock = models.IntegerField(null=False)
 
     def __str__(self) -> str:
         return self.nombre
