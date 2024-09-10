@@ -90,6 +90,8 @@ class Item(models.Model):
     valorUnitario = models.IntegerField(null=False)
     codigoProducto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, null=True)
     stock = models.IntegerField(null=False)
+    peso = models.FloatField(null=True)
+    volumen = models.FloatField(null=True) #volumen en metros cubicos
 
     def __str__(self) -> str:
         return self.nombre

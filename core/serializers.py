@@ -1,5 +1,5 @@
 from rest_framework import serializers # type: ignore
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, Catalogo05TiposTributos, ItemImpuesto
 
 class SegmentoProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,10 +38,19 @@ class UnidadMedidaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
-    unidadMedida = UnidadMedidaSerializer(read_only=True)
-    tipoPrecio = TipoPrecioSerializer(read_only=True)
-    codigoProducto = ProductoSerializer(read_only=True)
 
     class Meta:
         model = Item
+        fields = '__all__'
+
+class Catalogo05TiposTributosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Catalogo05TiposTributos
+        fields = '__all__'
+
+
+class ItemImpuestoSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ItemImpuesto
         fields = '__all__'

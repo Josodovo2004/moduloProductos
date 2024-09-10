@@ -1,5 +1,5 @@
 from rest_framework import generics # type: ignore
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, ItemImpuesto
 from .serializers import (
     SegmentoProductoSerializer,
     FamiliaProductoSerializer,
@@ -7,7 +7,8 @@ from .serializers import (
     ProductoSerializer,
     TipoPrecioSerializer,
     UnidadMedidaSerializer,
-    ItemSerializer
+    ItemSerializer,
+    ItemImpuestoSerializer
 )
 
 class SegmentoProductoListCreateView(generics.ListCreateAPIView):
@@ -65,3 +66,11 @@ class ItemListCreateView(generics.ListCreateAPIView):
 class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+
+class ItemImpuestoListCreateView(generics.ListCreateAPIView):
+    queryset = ItemImpuesto.objects.all()
+    serializer_class = ItemImpuestoSerializer
+
+class ItemImpuestoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ItemImpuesto.objects.all()
+    serializer_class = ItemImpuestoSerializer
