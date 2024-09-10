@@ -129,3 +129,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+
+CELERY_TIMEZONE = 'America/Lima'
+CELERY_ENABLE_UTC = False
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0' # Redis as message broker
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BROKER_URL = 'memory://'  # Use an in-memory broker for testing
+CELERY_RESULT_BACKEND = 'cache'  # Use cache as the result backend for testing
+CELERY_CACHE_BACKEND = 'memory'

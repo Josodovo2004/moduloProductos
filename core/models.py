@@ -67,6 +67,21 @@ class UnidadMedida(models.Model):
     def __str__(self):
         return f"{self.codigo} - {self.descripcion}"
     
+class Catalogo05TiposTributos(models.Model):
+    codigo = models.CharField(db_column='Codigo', max_length=4, primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(db_column='Name', max_length=6, blank=True, null=True)  # Field name made lowercase.
+    descripcion = models.CharField(db_column='Descripcion', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    un_ece_5153 = models.CharField(db_column='UN_ECE_5153', max_length=3, blank=True, null=True)  # Field name made lowercase.
+    un_ece_5305 = models.CharField(db_column='UN_ECE_5305', max_length=1, blank=True, null=True)
+
+
+    class Meta:
+        db_table = 'CATALOGO_05_TIPOS_TRIBUTOS'
+
+    def __str__(self) -> str:
+        return self.nombre
+
+    
 class Item(models.Model):
     unidadMedida = models.ForeignKey(UnidadMedida, on_delete=models.CASCADE)
     tipoPrecio = models.ForeignKey(TipoPrecio, on_delete=models.CASCADE)
@@ -78,3 +93,9 @@ class Item(models.Model):
 
     def __str__(self) -> str:
         return self.nombre
+    
+
+class ItemImpuesto(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    impuesto = models.ForeignKey(Catalogo05TiposTributos, on_delete=models.DO_NOTHING)
+    porcentaje=models.FloatField(null=False) #0.18 for IGV for example
