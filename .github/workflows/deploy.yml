@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # This specifies the GitHub runner, not the EC2 instance
 
     steps:
       - name: Checkout code
@@ -31,14 +31,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
           set -e  # Exit immediately if a command exits with a non-zero status
-          
+
           cd /home/ec2-user/app/
           
           # Check if Docker is installed
           if ! command -v docker &> /dev/null; then
               echo "Docker is not installed. Installing Docker..."
               sudo yum update -y
-              sudo yum install -y docker
+              sudo amazon-linux-extras install docker -y
               sudo service docker start
               sudo usermod -a -G docker ec2-user  # Add ec2-user to docker group
           else
@@ -48,28 +48,14 @@ jobs:
           # Check if Docker Compose is installed
           if ! command -v docker-compose &> /dev/null; then
               echo "Docker Compose is not installed. Installing Docker Compose..."
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
           else
               echo "Docker Compose is already installed."
           fi
           
-          # Configure PostgreSQL for remote access
-          echo "Configuring PostgreSQL for remote access..."
-          sudo sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/data/postgresql.conf
-          echo "host    all             all             your_ip_address/32            md5" | sudo tee -a /var/lib/pgsql/data/pg_hba.conf
-          
-          # Restart PostgreSQL
-          sudo systemctl restart postgresql
-          
-          # Configure the firewall to allow PostgreSQL connections
-          echo "Configuring firewall..."
-          sudo yum install -y firewalld
-          sudo systemctl start firewalld
-          sudo firewall-cmd --zone=public --add-port=5432/tcp --permanent
-          sudo firewall-cmd --reload
-          
           # Write config file for AWS CLI
+          mkdir -p /home/ec2-user/.aws  # Ensure .aws directory exists
           cat <<EOT > /home/ec2-user/.aws/config
           [default]
           region=us-east-1
