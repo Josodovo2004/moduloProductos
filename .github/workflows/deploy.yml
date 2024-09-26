@@ -44,13 +44,20 @@ jobs:
               echo "Docker is already installed."
           fi
 
-          # Check if Docker Compose is installed
+          # Check if Docker Compose is installed properly
           if ! command -v docker-compose &> /dev/null; then
               echo "Docker Compose is not installed. Installing Docker Compose..."
+              sudo rm -f /usr/local/bin/docker-compose  # Remove any corrupted version
               sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
           else
-              echo "Docker Compose is already installed."
+              echo "Docker Compose is already installed. Verifying..."
+              sudo docker-compose version || {
+                  echo "Docker Compose seems corrupted. Reinstalling..."
+                  sudo rm -f /usr/local/bin/docker-compose
+                  sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+                  sudo chmod +x /usr/local/bin/docker-compose
+              }
           fi
           
           # Write config file for AWS CLI
