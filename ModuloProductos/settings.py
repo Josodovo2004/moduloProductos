@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import environ
+from .awsData import sharedKey, dbEngine, nameDb, passwordDb, userDb, hostDb, portDb 
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,7 +34,8 @@ SECRET_KEY = 'django-insecure-mw#d6c#5db-rkgy=+c-b=h(*yknwkj1f^nna12r9@nped4$(hg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True 
 
 
 # Application definition
@@ -46,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'rest_framework',
-    'channels',
+    'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'ModuloProductos.urls'
@@ -85,12 +90,12 @@ WSGI_APPLICATION = 'ModuloProductos.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": env("ENGINE"),
-        "NAME": env("NAMEDB"),
-        "USER": env("USERDB"),
-        "PASSWORD": env("PASSWORDDB"),
-        "HOST": env("HOSTDB"),
-        "PORT": env("PORTDB"),
+        "ENGINE": dbEngine,
+        "NAME": nameDb,
+        "USER": userDb,
+        "PASSWORD": passwordDb,
+        "HOST": hostDb,
+        "PORT": portDb,
     }
 }
 
@@ -143,6 +148,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',  # For application/x-www-form-urlencoded
+        'rest_framework.parsers.MultiPartParser',  # For handling file uploads
+    ],
 }
 
 from datetime import timedelta
@@ -153,4 +167,4 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Adjust as necessary
 }
 
-ASGI_APPLICATION = 'myproject.asgi.application'
+ASGI_APPLICATION = 'ModuloProductos.asgi.application'
