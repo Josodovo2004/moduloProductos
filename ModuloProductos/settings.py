@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'SIGNING_KEY': env('SHARED_SECRET_KEY'),  # The shared secret key across services
+    'SIGNING_KEY': sharedKey,  # The shared secret key across services
     'AUTH_HEADER_TYPES': ('Bearer',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Adjust as necessary
 }
