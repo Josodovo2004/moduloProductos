@@ -21,7 +21,7 @@ jobs:
       - name: Copy files to EC2 instance
         run: |
           # Create .aws and app directories if they don't exis
-          mkdir -p /home/ec2-user/.aws /home/ec2-user/app
+          sudo mkdir -p /home/ec2-user/.aws /home/ec2-user/app
 
           scp -o StrictHostKeyChecking=no -r * ec2-user@${{ secrets.EC2_IP }}:/home/ec2-user/app/
 
