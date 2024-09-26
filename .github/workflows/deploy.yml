@@ -55,7 +55,9 @@ jobs:
               sudo docker-compose version || {
                   echo "Docker Compose seems corrupted. Reinstalling..."
                   sudo rm -f /usr/local/bin/docker-compose
+                  echo "1"
                   sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+                  echo "2"
                   sudo chmod +x /usr/local/bin/docker-compose
               }
           fi
