@@ -20,6 +20,9 @@ jobs:
 
       - name: Copy files to EC2 instance
         run: |
+          # Create .aws and app directories if they don't exis
+          mkdir -p /home/ec2-user/.aws /home/ec2-user/app
+
           scp -o StrictHostKeyChecking=no -r * ec2-user@${{ secrets.EC2_IP }}:/home/ec2-user/app/
 
       - name: Connect to EC2 and deploy
@@ -49,8 +52,6 @@ jobs:
               echo "Docker Compose is already installed."
           fi
           
-          # Create .aws and app directories if they don't exist
-          mkdir -p /home/ec2-user/.aws /home/ec2-user/app
           
           # Write config file for AWS CLI
           cat <<EOT > /home/ec2-user/.aws/config
