@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # This specifies the GitHub runner, not the EC2 instance
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -20,59 +20,23 @@ jobs:
 
       - name: Copy files to EC2 instance
         run: |
-          # Create .aws and app directories if they don't exist
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
-          sudo mkdir -p /home/ec2-user/.aws /home/ec2-user/app
-          EOF
-          
-          scp -o StrictHostKeyChecking=no -r * ec2-user@${{ secrets.EC2_IP }}:/home/ec2-user/app/
+          scp -o StrictHostKeyChecking=no -r * ec2-user@${{ secrets.EC2_IP }}:/home/ec2-user/projects/Qickart/${{ secrets.SERVICE_NAME }}
 
       - name: Connect to EC2 and deploy
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
-          set -e  # Exit immediately if a command exits with a non-zero status
-
-          cd /home/ec2-user/app/
+          cd /home/ec2-user/projects/Qickart/${{ secrets.SERVICE_NAME }}
+          # Remove the corrupted docker-compose if it exists
+          sudo rm -f /usr/local/bin/docker-compose
           
-          # Check if Docker is installed
-          if ! command -v docker &> /dev/null; then
-              echo "Docker is not installed. Installing Docker..."
-              sudo yum update -y
-              sudo amazon-linux-extras install docker -y
-              sudo service docker start
-              sudo usermod -a -G docker ec2-user  # Add ec2-user to docker group
-          else
-              echo "Docker is already installed."
-          fi
-
-          # Check if Docker Compose is installed
-          if ! command -v docker-compose &> /dev/null; then
-              echo "Docker Compose is not installed. Installing Docker Compose..."
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-          else
-              echo "Docker Compose is already installed."
-          fi
-          
-          # Write config file for AWS CLI
-          mkdir -p /home/ec2-user/.aws  # Ensure .aws directory exists
-          cat <<EOT > /home/ec2-user/.aws/config
-          [default]
-          region=us-east-1
-          output=json
-          EOT
-          
-          # Write credentials file for AWS CLI
-          cat <<EOT > /home/ec2-user/.aws/credentials
-          [default]
-          aws_access_key_id=AKIA3FLD4NWO5MSFCW5I
-          aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          EOT
+          # Install docker-compose
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
           
           # Stop and remove old containers
-          sudo docker-compose down
+          docker-compose down
           
           # Build and start containers
-          sudo docker-compose up -d --build
+          docker-compose up -d --build
           exit
           EOF
