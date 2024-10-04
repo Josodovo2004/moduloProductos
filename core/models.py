@@ -92,6 +92,7 @@ class Item(models.Model):
     stock = models.IntegerField(null=False)
     peso = models.FloatField(null=True)
     volumen = models.FloatField(null=True) #volumen en metros cubicos
+    imagen = models.CharField(max_length=200, null=True)
 
     def __str__(self) -> str:
         return self.nombre
