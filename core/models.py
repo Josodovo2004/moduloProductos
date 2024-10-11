@@ -81,6 +81,8 @@ class Catalogo05TiposTributos(models.Model):
     def __str__(self) -> str:
         return self.nombre
 
+class Categoria(models.Model):
+    nombre = models.CharField(null=False)
     
 class Item(models.Model):
     unidadMedida = models.ForeignKey(UnidadMedida, on_delete=models.CASCADE)
@@ -93,6 +95,7 @@ class Item(models.Model):
     peso = models.FloatField(null=True)
     volumen = models.FloatField(null=True) #volumen en metros cubicos
     imagen = models.CharField(max_length=200, null=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return self.nombre
@@ -102,3 +105,5 @@ class ItemImpuesto(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     impuesto = models.ForeignKey(Catalogo05TiposTributos, on_delete=models.DO_NOTHING)
     porcentaje=models.FloatField(null=False) #0.18 for IGV for example
+    
+    
