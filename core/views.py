@@ -12,34 +12,51 @@ from .serializers import (
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
+from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class SegmentoProductoListCreateView(generics.ListCreateAPIView):
     queryset = SegmentoProducto.objects.all()
     serializer_class = SegmentoProductoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = SegmentoProductoFilter
+
 
 class SegmentoProductoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SegmentoProducto.objects.all()
     serializer_class = SegmentoProductoSerializer
 
+
 class FamiliaProductoListCreateView(generics.ListCreateAPIView):
     queryset = FamiliaProducto.objects.all()
     serializer_class = FamiliaProductoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = FamiliaProductoFilter
+
 
 class FamiliaProductoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FamiliaProducto.objects.all()
     serializer_class = FamiliaProductoSerializer
 
+
 class ClaseProductoListCreateView(generics.ListCreateAPIView):
     queryset = ClaseProducto.objects.all()
     serializer_class = ClaseProductoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ClaseProductoFilter
+
 
 class ClaseProductoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ClaseProducto.objects.all()
     serializer_class = ClaseProductoSerializer
 
+
 class ProductoListCreateView(generics.ListCreateAPIView):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductoFilter
+
 
 class ProductoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Producto.objects.all()
