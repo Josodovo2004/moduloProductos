@@ -12,7 +12,7 @@ from .serializers import (
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
-from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter
+from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter, ItemFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 class SegmentoProductoListCreateView(generics.ListCreateAPIView):
@@ -84,10 +84,8 @@ class ItemListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
-
-    @jwt_required
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ItemFilter
 
     @jwt_required
     def post(self, request, *args, **kwargs):
@@ -99,10 +97,6 @@ class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ItemSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
-
-    @jwt_required
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
     @jwt_required
     def put(self, request, *args, **kwargs):
@@ -117,10 +111,6 @@ class ItemImpuestoListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemImpuestoSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
-    
-    @jwt_required
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
     @jwt_required
     def post(self, request, *args, **kwargs):
@@ -132,10 +122,6 @@ class ItemImpuestoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIVie
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
     
-    @jwt_required
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
     @jwt_required
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)

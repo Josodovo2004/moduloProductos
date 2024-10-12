@@ -101,6 +101,16 @@ DATABASES = {
     }
 }
 
+try:
+    # Test the database connection here, for example by trying to connect using Django's connection API
+    from django.db import connections
+    connections['default'].cursor()  # Tries to establish a connection
+except Exception as e:
+    print(f"Failed to connect to the database: {e}")
+    
+    # Set fallback values
+    DATABASES["default"]["HOST"] = "localhost"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

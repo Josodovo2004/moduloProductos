@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item
 
 class SegmentoProductoFilter(filters.FilterSet):
     descripcion = filters.CharFilter(lookup_expr='icontains')
@@ -34,3 +34,9 @@ class ProductoFilter(filters.FilterSet):
     class Meta:
         model = Producto
         fields = ['codigo', 'clase_codigo', 'descripcion']
+        
+class ItemFilter(filters.FilterSet):
+    categoria = filters.CharFilter(field_name='categoria', lookup_expr='exact')
+    class Meta:
+        model = Item
+        fields = ['categoria']
