@@ -16,8 +16,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Copy the SSL certificates into the container
-COPY ~/ssl_certificates/cert.pem /app/cert.pem
-COPY ~/ssl_certificates/key.pem /app/key.pem
+COPY home/user-ec2/ssl_certificates/cert.pem /app/cert.pem
+COPY home/user-ec2/ssl_certificates/key.pem /app/key.pem
 
 # Expose the port the app runs on
 EXPOSE 8000
