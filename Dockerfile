@@ -15,8 +15,12 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the Django project into the container
 COPY . /app/
 
+# Copy the SSL certificates into the container
+COPY ~/ssl_certificates/cert.pem /app/cert.pem
+COPY ~/ssl_certificates/key.pem /app/key.pem
+
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Command to run the Django app
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "ModuloProductos.wsgi:application"]
+# Command to run the Django app with HTTPS
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--certfile=/app/cert.pem", "--keyfile=/app/key.pem", "ModuloProductos.wsgi:application"]
