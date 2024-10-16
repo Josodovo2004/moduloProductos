@@ -98,9 +98,6 @@ DATABASES = {
         "PASSWORD": passwordDb,
         "HOST": hostDb,
         "PORT": portDb,
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # Ensure this is set
-        },
     }
 }
 
