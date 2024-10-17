@@ -24,13 +24,17 @@ services:
 
   web:
     build: .
-    command: bash -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 ModuloProductos.wsgi:application"
+    command: >
+      bash -c "python manage.py migrate && 
+               python manage.py import_segmento &&
+               gunicorn --bind 0.0.0.0:8000 ModuloProductos.wsgi:application"
     volumes:
       - .:/app
     ports:
       - "8002:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgres://postgres:1234@db/ModuloProductos
     networks:
