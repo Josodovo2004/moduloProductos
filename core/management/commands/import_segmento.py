@@ -7,14 +7,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Load SegmentoProducto
-        with open('csv/secmentos.csv', newline='') as csvfile:
+        with open('core/management/commands/csv/segmentos.csv', newline='', encoding='windows-1252') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 SegmentoProducto.objects.get_or_create(codigo=row['CODIGO DE SEGMENTO'], descripcion=row['DESCRIPCION DE SEGMENTO'])
         self.stdout.write(self.style.SUCCESS('Successfully loaded SegmentoProducto data.'))
 
         # Load FamiliaProducto
-        with open('csv/familias.csv', newline='') as csvfile:
+        with open('core/management/commands/csv/familias.csv', newline='', encoding='windows-1252') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 segmento = SegmentoProducto.objects.get(codigo=row['CODIGO DE SEGMENTO'])
@@ -22,7 +22,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Successfully loaded FamiliaProducto data.'))
 
         # Load ClaseProducto
-        with open('csv/clases.csv', newline='') as csvfile:
+        with open('core/management/commands/csv/clases.csv', newline='', encoding='windows-1252') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 familia = FamiliaProducto.objects.get(codigo=row['CODIGO DE FAMILIA'])
@@ -30,7 +30,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Successfully loaded ClaseProducto data.'))
 
         # Load Producto
-        with open('csv/productos.csv', newline='') as csvfile:
+        with open('core/management/commands/csv/productos.csv', newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 clase = ClaseProducto.objects.get(codigo=row['CODIGO DE CLASE'])
