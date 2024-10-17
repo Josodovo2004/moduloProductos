@@ -96,7 +96,7 @@ DATABASES = {
         "NAME": nameDb,
         "USER": userDb,
         "PASSWORD": passwordDb,
-        "HOST": hostDb,
+        "HOST": 'db',
         "PORT": portDb,
     }
 }
