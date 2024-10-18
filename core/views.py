@@ -1,5 +1,5 @@
 from rest_framework import generics # type: ignore
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, ItemImpuesto
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, ItemImpuesto, Categoria
 from .serializers import (
     SegmentoProductoSerializer,
     FamiliaProductoSerializer,
@@ -8,7 +8,8 @@ from .serializers import (
     TipoPrecioSerializer,
     UnidadMedidaSerializer,
     ItemSerializer,
-    ItemImpuestoSerializer
+    ItemImpuestoSerializer,
+    CategoriaSerializer,
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
@@ -119,6 +120,30 @@ class ItemImpuestoListCreateView(generics.ListCreateAPIView):
 class ItemImpuestoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ItemImpuesto.objects.all()
     serializer_class = ItemImpuestoSerializer
+    authentication_classes = [CustomJWTAuthentication]
+    permission_classes = []
+    
+    @jwt_required
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @jwt_required
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+    
+class CategoriaListCreateView(generics.ListCreateAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    authentication_classes = [CustomJWTAuthentication]
+    permission_classes = []
+
+    @jwt_required
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+class CategoriaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
     
