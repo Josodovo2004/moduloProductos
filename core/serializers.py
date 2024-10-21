@@ -1,5 +1,5 @@
 from rest_framework import serializers # type: ignore
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, Catalogo05TiposTributos, ItemImpuesto
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, Catalogo05TiposTributos, ItemImpuesto, Categoria
 import boto3
 from django.conf import settings
 
@@ -88,4 +88,10 @@ class ItemImpuestoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ItemImpuesto
+        fields = '__all__'
+
+class CategoriaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Categoria
         fields = '__all__'
