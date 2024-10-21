@@ -95,7 +95,7 @@ DATABASES = {
         "ENGINE": dbEngine,
         "NAME": nameDb,
         "USER": userDb,
-        "PASSWORD": passwordDb,
+        "PASSWORD": 'Jose_d@vid2004',
         "HOST": 'db',
         "PORT": portDb,
     }
@@ -109,7 +109,7 @@ except Exception as e:
     print(f"Failed to connect to the database: {e}")
     
     # Set fallback values
-    DATABASES["default"]["HOST"] = "db"
+    DATABASES["default"]["HOST"] = "localhost"
 
 
 # Password validation
