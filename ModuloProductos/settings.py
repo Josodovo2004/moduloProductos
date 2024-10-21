@@ -95,7 +95,7 @@ DATABASES = {
         "ENGINE": dbEngine,
         "NAME": nameDb,
         "USER": userDb,
-        "PASSWORD": 'Jose_d@vid2004',
+        "PASSWORD": passwordDb,
         "HOST": 'db',
         "PORT": portDb,
     }
@@ -110,6 +110,7 @@ except Exception as e:
     
     # Set fallback values
     DATABASES["default"]["HOST"] = "localhost"
+    DATABASES["default"]["PASSWORD"] = "Jose_d@vid2004"
 
 
 # Password validation
