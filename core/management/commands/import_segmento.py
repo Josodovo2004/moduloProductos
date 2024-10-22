@@ -1,6 +1,6 @@
 import csv
 from django.core.management.base import BaseCommand
-from core.models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto
+from core.models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, Catalogo05TiposTributos, UnidadMedida
 from django.db.utils import IntegrityError
 
 class Command(BaseCommand):
@@ -54,3 +54,47 @@ class Command(BaseCommand):
                 except IntegrityError:
                     pass
         self.stdout.write(self.style.SUCCESS('Successfully loaded Producto data.'))
+
+        # Load TipoPrecio
+        with open('core/management/commands/csv/tipo_precios.csv', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    if not TipoPrecio.objects.filter(codigo=row['CODIGO']).exists():
+                        TipoPrecio.objects.create(
+                            codigo=row['CODIGO'], 
+                            descripcion=row['DESCRIPCION']
+                        )
+                except IntegrityError:
+                    pass
+        self.stdout.write(self.style.SUCCESS('Successfully loaded TipoPrecio data.'))
+
+        with open('core/management/commands/csv/catalogo_05_tipos_tributos.csv', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    if not Catalogo05TiposTributos.objects.filter(codigo=row['Codigo']).exists():
+                        Catalogo05TiposTributos.objects.create(
+                            codigo=row['Codigo'],
+                            nombre=row['Name'],
+                            descripcion=row['Descripcion'],
+                            un_ece_5153=row['UN_ECE_5153'],
+                            un_ece_5305=row['UN_ECE_5305']
+                        )
+                except IntegrityError:
+                    pass
+        self.stdout.write(self.style.SUCCESS('Successfully loaded Catalogo05TiposTributos data.'))
+
+
+        with open('core/management/commands/csv/unidad_medida.csv', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    if not UnidadMedida.objects.filter(codigo=row['codigo']).exists():
+                        UnidadMedida.objects.create(
+                            codigo=row['codigo'],
+                            descripcion=row['descripcion']
+                        )
+                except IntegrityError:
+                    pass
+        self.stdout.write(self.style.SUCCESS('Successfully loaded UnidadMedida data.'))
