@@ -1,0 +1,9 @@
+Codigo,Name,Descripcion,UN_ECE_5153,UN_ECE_5305
+1000,IGV,Impuesto general a las ventas,VAT,IGV
+1016,IVAP,Impuesto a la venta arroz pilado,VAT,IVAP
+2000,ISC,Impuesto selectivo al consumo,EXC,ISC
+9995,EXP,Exportación,FRE,EXP
+9996,GRA,Gratuito,FRE,GRA
+9997,EXO,Exonerado,VAT,EXO
+9998,INA,Inafecto,FRE,INA
+9999,OTR,Otros conceptos de pago,OTH,OTR

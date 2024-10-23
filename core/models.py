@@ -71,8 +71,8 @@ class Catalogo05TiposTributos(models.Model):
     codigo = models.CharField(db_column='Codigo', max_length=4, primary_key=True)  # Field name made lowercase.
     nombre = models.CharField(db_column='Name', max_length=6, blank=True, null=True)  # Field name made lowercase.
     descripcion = models.CharField(db_column='Descripcion', max_length=200, blank=True, null=True)  # Field name made lowercase.
-    un_ece_5153 = models.CharField(db_column='UN_ECE_5153', max_length=3, blank=True, null=True)  # Field name made lowercase.
-    un_ece_5305 = models.CharField(db_column='UN_ECE_5305', max_length=1, blank=True, null=True)
+    un_ece_5153 = models.CharField(db_column='UN_ECE_5153', max_length=5, blank=True, null=True)  # Field name made lowercase.
+    un_ece_5305 = models.CharField(db_column='UN_ECE_5305', max_length=5, blank=True, null=True)
 
 
     class Meta:

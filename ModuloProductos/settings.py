@@ -169,6 +169,12 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',  # For application/x-www-form-urlencoded
         'rest_framework.parsers.MultiPartParser',  # For handling file uploads
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
 }
 
 from datetime import timedelta
