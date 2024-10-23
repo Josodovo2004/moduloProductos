@@ -18,6 +18,7 @@ from .views import (
     ItemImpuestoRetrieveUpdateDestroyView,
     CategoriaListCreateView,
     CategoriaRetrieveUpdateDestroyView,
+    resumenItems,
 )
 
 urlpatterns = [
@@ -47,4 +48,6 @@ urlpatterns = [
 
     path('categoria/', CategoriaListCreateView.as_view(), name='categoria-list-create'),
     path('categoria/<pk>/', CategoriaRetrieveUpdateDestroyView.as_view(), name='categoria-detail'),
+    
+    path('resumen/', resumenItems, name='resumen')
 ]

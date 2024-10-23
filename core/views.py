@@ -15,7 +15,10 @@ from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
 from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter, ItemFilter
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.decorators import api_view # type: ignore
+import json
+from rest_framework.response import Response
+from rest_framework import status
 class SegmentoProductoListCreateView(generics.ListCreateAPIView):
     queryset = SegmentoProducto.objects.all()
     serializer_class = SegmentoProductoSerializer
@@ -154,3 +157,39 @@ class CategoriaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     @jwt_required
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
+    
+@api_view(['POST'])
+def resumenItems(request):
+    try:
+        data = request.data  # No need to use json.loads here
+        # You can print or process 'data' here if necessary
+        print(data)
+        returnData = []
+        for value in data:
+            id_item = value['codigoItem']
+            item = Item.objects.filter(id=id_item).first()
+            itemImpuesto = ItemImpuesto.objects.filter(item__id=id_item)
+            precioTotal = item.valorUnitario * value['cantidad']
+            impuestos = {}
+            for impuesto in itemImpuesto:
+                if impuesto.impuesto.nombre not in impuestos.keys():
+                    impuestos[impuesto.impuesto.nombre] = {
+                        'id': impuesto.impuesto.codigo,
+                        'name': impuesto.impuesto.nombre,
+                        'tax_type_code': impuesto.impuesto.un_ece_5153, 
+                        'tax_amount' : (impuesto.porcentaje/100) * precioTotal
+                    }
+            returnData.append({
+                'precioTotal': precioTotal,
+                'tax' : impuestos,
+            })
+        
+        # Return a successful response
+        return Response(returnData, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        # Log the error (optional)
+        print(f'Error: {e}')
+        
+        # Return a user-friendly error message
+        return Response({'error': 'Something went wrong.'}, status=status.HTTP_400_BAD_REQUEST)
