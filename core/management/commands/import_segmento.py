@@ -99,7 +99,7 @@ class Command(BaseCommand):
                     pass
         self.stdout.write(self.style.SUCCESS('Successfully loaded UnidadMedida data.'))
         
-        with open('Catalogo07TiposDeAfectacionDelIGV.csv', newline='', encoding='utf-8') as csvfile:
+        with open('core/management/commands/csv/Catalogo07TiposDeAfectacionDelIGV.csv', newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
