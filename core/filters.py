@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item, Conjunto, ConjuntoItem
 
 class SegmentoProductoFilter(filters.FilterSet):
     descripcion = filters.CharFilter(lookup_expr='icontains')
@@ -40,3 +40,22 @@ class ItemFilter(filters.FilterSet):
     class Meta:
         model = Item
         fields = ['categoria']
+
+class ConjuntoFilter(filters.FilterSet):
+    precio_min = filters.NumberFilter(field_name="precio", lookup_expr="gte")
+    precio_max = filters.NumberFilter(field_name="precio", lookup_expr="lte")
+    fecha_limite = filters.DateFilter(field_name="fechaLimite")
+
+    class Meta:
+        model = Conjunto
+        fields = ['precio', 'fechaLimite']
+
+class ConjuntoItemFilter(filters.FilterSet):
+    cantidad_min = filters.NumberFilter(field_name="cantidadItem", lookup_expr="gte")
+    cantidad_max = filters.NumberFilter(field_name="cantidadItem", lookup_expr="lte")
+    item_id = filters.NumberFilter(field_name="item__id")
+
+    class Meta:
+        model = ConjuntoItem
+        fields = ['cantidadItem', 'item']
+    

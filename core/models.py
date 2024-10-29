@@ -75,11 +75,16 @@ class Catalogo05TiposTributos(models.Model):
     un_ece_5305 = models.CharField(db_column='UN_ECE_5305', max_length=5, blank=True, null=True)
 
 
+
     class Meta:
         db_table = 'CATALOGO_05_TIPOS_TRIBUTOS'
 
     def __str__(self) -> str:
         return self.nombre
+    
+class Catalogo07TiposDeAfectacionDelIGV(models.Model):
+    codigo = models.CharField(db_column='Codigo', max_length=2, primary_key=True)
+    descripcion = models.CharField(db_column='Descripcion', max_length=200, null = False)
 
 class Categoria(models.Model):
     nombre = models.CharField(null=False)
@@ -105,5 +110,15 @@ class ItemImpuesto(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     impuesto = models.ForeignKey(Catalogo05TiposTributos, on_delete=models.DO_NOTHING)
     porcentaje=models.FloatField(null=False) #0.18 for IGV for example
+    afectacion = models.ForeignKey(Catalogo07TiposDeAfectacionDelIGV, on_delete=models.SET_NULL, null=True)
     
+
+class Conjunto(models.Model):
+    precio = models.FloatField()
+    fechaLimite = models.DateField(null=True)
+    imagen = models.CharField(null=True)
     
+class ConjuntoItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    cantidadItem = models.IntegerField()
+    conjunto = models.ForeignKey(Conjunto, on_delete=models.CASCADE)    

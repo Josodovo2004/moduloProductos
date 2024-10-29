@@ -1,6 +1,6 @@
 import csv
 from django.core.management.base import BaseCommand
-from core.models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, Catalogo05TiposTributos, UnidadMedida
+from core.models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, Catalogo05TiposTributos, UnidadMedida, Catalogo07TiposDeAfectacionDelIGV
 from django.db.utils import IntegrityError
 
 class Command(BaseCommand):
@@ -98,3 +98,16 @@ class Command(BaseCommand):
                 except IntegrityError:
                     pass
         self.stdout.write(self.style.SUCCESS('Successfully loaded UnidadMedida data.'))
+        
+        with open('Catalogo07TiposDeAfectacionDelIGV.csv', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    if not Catalogo07TiposDeAfectacionDelIGV.objects.filter(codigo=row['codigo']).exists():
+                        Catalogo07TiposDeAfectacionDelIGV.objects.create(
+                            codigo=row['codigo'],
+                            descripcion=row['descripcion']
+                        )
+                except IntegrityError:
+                    pass
+        self.stdout.write(self.style.SUCCESS("Successfully loaded Catalogo07TiposDeAfectacionDelIGV data."))
