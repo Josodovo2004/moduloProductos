@@ -37,8 +37,8 @@ class ProductoFilter(filters.FilterSet):
         
 class ItemFilter(filters.FilterSet):
     categoria = filters.CharFilter(field_name='categoria__nombre', lookup_expr='icontains')  # Filter by category name
-    unidadMedida = filters.CharFilter(field_name='unidadMedida__nombre', lookup_expr='icontains')  # Filter by unit name
-    tipoPrecio = filters.CharFilter(field_name='tipoPrecio__nombre', lookup_expr='icontains')  # Filter by price type name
+    unidadMedida = filters.CharFilter(field_name='Unidad__de__mediada', lookup_expr='icontains')  # Filter by unit name
+    tipoPrecio = filters.CharFilter(field_name='tipo__de__precio', lookup_expr='icontains')  # Filter by price type name
     nombre = filters.CharFilter(lookup_expr='icontains')  # Filter by item name
     valorUnitario_min = filters.NumberFilter(field_name='valorUnitario', lookup_expr='gte')  # Minimum value filter
     valorUnitario_max = filters.NumberFilter(field_name='valorUnitario', lookup_expr='lte')  # Maximum value filter

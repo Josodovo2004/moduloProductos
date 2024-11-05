@@ -98,14 +98,14 @@ class TipoPrecioRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class UnidadMedidaListCreateView(generics.ListCreateAPIView):
     queryset = UnidadMedida.objects.all()
     serializer_class = UnidadMedidaSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UnidadMedidaFilter
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
 
 class UnidadMedidaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UnidadMedida.objects.all()
     serializer_class = UnidadMedidaSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = UnidadMedidaFilter
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
 
