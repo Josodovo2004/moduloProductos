@@ -48,6 +48,7 @@ class ItemFilter(filters.FilterSet):
     peso_max = filters.NumberFilter(field_name='peso', lookup_expr='lte')  # Maximum weight filter
     volumen_min = filters.NumberFilter(field_name='volumen', lookup_expr='gte')  # Minimum volume filter
     volumen_max = filters.NumberFilter(field_name='volumen', lookup_expr='lte')  # Maximum volume filter
+    codigoBarras = filters.CharFilter(field_name='codigo__de__Barras', lookup_expr='icontains')
 
     class Meta:
         model = Item
@@ -55,7 +56,7 @@ class ItemFilter(filters.FilterSet):
             'categoria', 'unidadMedida', 'tipoPrecio', 'nombre',
             'valorUnitario_min', 'valorUnitario_max',
             'stock_min', 'stock_max', 'peso_min', 'peso_max',
-            'volumen_min', 'volumen_max'
+            'volumen_min', 'volumen_max', 'codigoBarras'
         ]
 
 class ConjuntoFilter(filters.FilterSet):
