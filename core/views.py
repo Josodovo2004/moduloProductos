@@ -143,7 +143,11 @@ class ItemListCreateView(generics.ListCreateAPIView):
                     data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
                     data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
                     
-                    listaImpuestos = ItemImpuesto.objects.filter()
+                    listaImpuestos = ItemImpuesto.objects.filter(item= item.id).first()
+                    if listaImpuestos and len(listaImpuestos)>0:
+                        serializedImpuestos = ItemImpuestoSerializer(listaImpuestos).data
+                        for value in serializedImpuestos:
+                            data['results'][i]['taxes'] = serializedImpuestos
                  
         response.data = data
         return Response(response.data)
