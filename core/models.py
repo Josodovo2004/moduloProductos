@@ -101,6 +101,7 @@ class Item(models.Model):
     volumen = models.FloatField(null=True) #volumen en metros cubicos
     imagen = models.CharField(max_length=200, null=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
+    codigoBarras = models.CharField(max_length=100, null=True)
 
     def __str__(self) -> str:
         return self.nombre

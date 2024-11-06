@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item, Conjunto, ConjuntoItem
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item, Conjunto, ConjuntoItem, UnidadMedida
 
 class SegmentoProductoFilter(filters.FilterSet):
     descripcion = filters.CharFilter(lookup_expr='icontains')
@@ -36,10 +36,28 @@ class ProductoFilter(filters.FilterSet):
         fields = ['codigo', 'clase_codigo', 'descripcion']
         
 class ItemFilter(filters.FilterSet):
-    categoria = filters.CharFilter(field_name='categoria', lookup_expr='exact')
+    categoria = filters.CharFilter(field_name='categoria__nombre', lookup_expr='icontains')  # Filter by category name
+    unidadMedida = filters.CharFilter(lookup_expr='icontains')  # Filter by unit name
+    tipoPrecio = filters.CharFilter(lookup_expr='icontains')  # Filter by price type name
+    nombre = filters.CharFilter(lookup_expr='icontains')  # Filter by item name
+    valorUnitario_min = filters.NumberFilter(field_name='valorUnitario', lookup_expr='gte')  # Minimum value filter
+    valorUnitario_max = filters.NumberFilter(field_name='valorUnitario', lookup_expr='lte')  # Maximum value filter
+    stock_min = filters.NumberFilter(field_name='stock', lookup_expr='gte')  # Minimum stock filter
+    stock_max = filters.NumberFilter(field_name='stock', lookup_expr='lte')  # Maximum stock filter
+    peso_min = filters.NumberFilter(field_name='peso', lookup_expr='gte')  # Minimum weight filter
+    peso_max = filters.NumberFilter(field_name='peso', lookup_expr='lte')  # Maximum weight filter
+    volumen_min = filters.NumberFilter(field_name='volumen', lookup_expr='gte')  # Minimum volume filter
+    volumen_max = filters.NumberFilter(field_name='volumen', lookup_expr='lte')  # Maximum volume filter
+    codigoBarras = filters.CharFilter( lookup_expr='icontains')
+
     class Meta:
         model = Item
-        fields = ['categoria']
+        fields = [
+            'categoria', 'unidadMedida', 'tipoPrecio', 'nombre',
+            'valorUnitario_min', 'valorUnitario_max',
+            'stock_min', 'stock_max', 'peso_min', 'peso_max',
+            'volumen_min', 'volumen_max', 'codigoBarras'
+        ]
 
 class ConjuntoFilter(filters.FilterSet):
     precio_min = filters.NumberFilter(field_name="precio", lookup_expr="gte")
@@ -59,3 +77,10 @@ class ConjuntoItemFilter(filters.FilterSet):
         model = ConjuntoItem
         fields = ['cantidadItem', 'item']
     
+class UnidadMedidaFilter(filters.FilterSet):
+    codigo = filters.CharFilter(lookup_expr='icontains')  # Filter by code (partial match)
+    descripcion = filters.CharFilter(lookup_expr='icontains')  # Filter by description (partial match)
+
+    class Meta:
+        model = UnidadMedida
+        fields = ['codigo', 'descripcion']

@@ -15,7 +15,7 @@ from .serializers import (
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
-from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter, ItemFilter, ConjuntoFilter, ConjuntoItemFilter
+from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter, ItemFilter, ConjuntoFilter, ConjuntoItemFilter, UnidadMedidaFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view # type: ignore
 import json
@@ -99,6 +99,8 @@ class TipoPrecioRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class UnidadMedidaListCreateView(generics.ListCreateAPIView):
     queryset = UnidadMedida.objects.all()
     serializer_class = UnidadMedidaSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UnidadMedidaFilter
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
 
