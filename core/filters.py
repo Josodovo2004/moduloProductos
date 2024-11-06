@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item, Conjunto, ConjuntoItem, UnidadMedida
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, Item, Conjunto, ConjuntoItem, UnidadMedida, Categoria, ItemImpuesto
 
 class SegmentoProductoFilter(filters.FilterSet):
     descripcion = filters.CharFilter(lookup_expr='icontains')
@@ -84,3 +84,20 @@ class UnidadMedidaFilter(filters.FilterSet):
     class Meta:
         model = UnidadMedida
         fields = ['codigo', 'descripcion']
+        
+class CategoriaFilter(filters.FilterSet):
+    nombre = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Categoria
+        fields = ['nombre']
+        
+class ItemImpuestoFilter(filters.FilterSet):
+    item = filters.NumberFilter(field_name='item__id')  # Filtering by item ID
+    impuesto = filters.NumberFilter(field_name='impuesto__id')  # Filtering by impuesto ID
+    porcentaje = filters.NumberFilter()  # Exact match for porcentaje
+    afectacion = filters.NumberFilter(field_name='afectacion__id', null_value='null')  # Filtering by afectacion ID
+
+    class Meta:
+        model = ItemImpuesto
+        fields = ['item', 'impuesto', 'porcentaje', 'afectacion']

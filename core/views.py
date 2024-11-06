@@ -15,7 +15,17 @@ from .serializers import (
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
-from .filters import SegmentoProductoFilter, FamiliaProductoFilter, ClaseProductoFilter, ProductoFilter, ItemFilter, ConjuntoFilter, ConjuntoItemFilter, UnidadMedidaFilter
+from .filters import (
+    SegmentoProductoFilter, 
+    FamiliaProductoFilter, 
+    ClaseProductoFilter, 
+    ProductoFilter, 
+    ItemFilter, 
+    ConjuntoFilter, 
+    ConjuntoItemFilter, 
+    UnidadMedidaFilter, 
+    CategoriaFilter,
+    ItemImpuestoFilter)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view # type: ignore
 import json
@@ -143,6 +153,8 @@ class ItemImpuestoListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemImpuestoSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ItemImpuestoFilter
 
     @jwt_required
     def post(self, request, *args, **kwargs):
@@ -167,6 +179,9 @@ class CategoriaListCreateView(generics.ListCreateAPIView):
     serializer_class = CategoriaSerializer
     authentication_classes = [CustomJWTAuthentication]
     permission_classes = []
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = CategoriaFilter
+
 
     @jwt_required
     def post(self, request, *args, **kwargs):
