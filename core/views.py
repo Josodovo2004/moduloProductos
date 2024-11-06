@@ -25,6 +25,7 @@ import boto3
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema # type: ignore
 from drf_yasg import openapi # type: ignore
+from django.shortcuts import get_object_or_404
 
 
 class SegmentoProductoListCreateView(generics.ListCreateAPIView):
@@ -275,7 +276,33 @@ def resumenItems(request):
         # Return a user-friendly error message
         return Response({'error': 'Something went wrong.'}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['POST'])
+def ajustarStock(request):
+    try:
+        # Get data from the request
+        item_id = request.data.get('item_id')
+        cantidad = request.data.get('cantidad')
 
+        # Validate that the necessary data is provided
+        if item_id is None or cantidad is None:
+            return Response({'error': 'Item ID y cantidad son requeridos'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the item or return 404 if it does not exist
+        item = get_object_or_404(Item, id=item_id)
+
+        # Adjust the stock
+        item.stock += cantidad  # Increase or decrease the stock
+        item.save()  # Save the updated item
+
+        # Return the updated item data
+        return Response({
+            'id': item.id,
+            'nombre': item.nombre,
+            'stock': item.stock
+        }, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class GeneratePresignedUrlView(APIView):
     authentication_classes = [CustomJWTAuthentication]

@@ -23,6 +23,7 @@ from .views import (
     ConjuntoRetrieveUpdateDestroyView,
     ConjuntoItemRetrieveUpdateDestroyView,
     resumenItems,
+    ajustarStock,
     GeneratePresignedUrlView,
 )
 
@@ -57,12 +58,11 @@ urlpatterns = [
     path('conjuntos/', ConjuntoListCreateView.as_view(), name='conjunto-list-create'),
     path('conjuntos/<int:pk>/', ConjuntoRetrieveUpdateDestroyView.as_view(), name='conjunto-detail'),
 
-    # ConjuntoItem URLs
     path('conjunto-items/', ConjuntoItemListCreateView.as_view(), name='conjuntoitem-list-create'),
     path('conjunto-items/<int:pk>/', ConjuntoItemRetrieveUpdateDestroyView.as_view(), name='conjuntoitem-detail'),
     
     path('generate-presigned-url/', GeneratePresignedUrlView.as_view(), name='generate-presigned-url'),
+    path('ajustar_stock/', ajustarStock, name='ajustar-stock'),
 
-    
     path('resumen/', resumenItems, name='resumen')
 ]
