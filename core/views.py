@@ -136,11 +136,12 @@ class ItemListCreateView(generics.ListCreateAPIView):
         for i in range(len(data['results'])):
             if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
                 item = self.get_queryset().filter(id=data['results'][i]['id']).first()
+                item: Item
                 if item:
-                    data['results'][i]['unidadMedida'] = UnidadMedida.objects.filter(codigo=data['results'][i]['unidadMedida']).first()
-                    data['results'][i]['tipoPrecio'] = TipoPrecio.objects.filter(codigo=data['results'][i]['tipoPrecio']).first()
-                    data['results'][i]['categoria'] = Categoria.objects.filter(id=data['results'][i]['categoria']).first()
-                    data['results'][i]['codigoProducto'] = Producto.objects.filter(codigo=data['results'][i]['codigoProducto']).first()
+                    data['results'][i]['unidadMedida'] = UnidadMedidaSerializer(item.unidadMedida).data
+                    data['results'][i]['tipoPrecio'] = TipoPrecioSerializer(item.tipoPrecio).data
+                    data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
+                    data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
                  
         response.data = data
         return Response(response.data)
