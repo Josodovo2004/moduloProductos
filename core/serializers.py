@@ -57,6 +57,12 @@ class ItemImpuestoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemImpuesto
         fields = '__all__'
+        
+class ModifiedItemImpuestoSerializer(serializers.ModelSerializer):
+    impuesto = Catalogo05TiposTributosSerializer()
+    class Meta:
+        model = ItemImpuesto
+        fields = '__all__'
 
 class CategoriaSerializer(serializers.ModelSerializer):
 

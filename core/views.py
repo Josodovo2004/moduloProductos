@@ -12,6 +12,7 @@ from .serializers import (
     CategoriaSerializer,
     ConjuntoItemSerializer,
     ConjuntoSerializer,
+    ModifiedItemImpuestoSerializer
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
@@ -25,7 +26,9 @@ from .filters import (
     ConjuntoItemFilter, 
     UnidadMedidaFilter, 
     CategoriaFilter,
-    ItemImpuestoFilter)
+    ItemImpuestoFilter,
+    
+    )
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view # type: ignore
 import json
@@ -132,7 +135,6 @@ class ItemListCreateView(generics.ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         data = response.data
-        # Modify the data in the response
         for i in range(len(data['results'])):
             if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
                 item = self.get_queryset().filter(id=data['results'][i]['id']).first()
@@ -145,7 +147,7 @@ class ItemListCreateView(generics.ListCreateAPIView):
                     
                     listaImpuestos = ItemImpuesto.objects.filter(item= item.id).first()
                     if listaImpuestos:
-                        serializedImpuestos = ItemImpuestoSerializer(listaImpuestos).data
+                        serializedImpuestos = ModifiedItemImpuestoSerializer(listaImpuestos).data
                         data['results'][i]['taxes'] = serializedImpuestos
                  
         response.data = data
