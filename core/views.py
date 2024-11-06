@@ -135,7 +135,7 @@ class ItemListCreateView(generics.ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         data = response.data
-        if not request.data['resupuesta_simple']:
+        if 'respuesta_simple' not in request.data:
             for i in range(len(data['results'])):
                 if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
                     item = self.get_queryset().filter(id=data['results'][i]['id']).first()
