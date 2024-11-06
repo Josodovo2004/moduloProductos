@@ -128,7 +128,23 @@ class ItemListCreateView(generics.ListCreateAPIView):
     permission_classes = []
     filter_backends = [DjangoFilterBackend]
     filterset_class = ItemFilter
-
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        data = response.data
+        # Modify the data in the response
+        for i in range(len(data['results'])):
+            if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
+                item = self.get_queryset().filter(id=data['results'][i]['id']).first()
+                if item:
+                    data['results'][i]['unidadMedida'] = UnidadMedida.objects.filter(codigo=data['results'][i]['unidadMedida']).first()
+                    data['results'][i]['tipoPrecio'] = TipoPrecio.objects.filter(codigo=data['results'][i]['tipoPrecio']).first()
+                    data['results'][i]['categoria'] = Categoria.objects.filter(id=data['results'][i]['categoria']).first()
+                    data['results'][i]['codigoProducto'] = Producto.objects.filter(codigo=data['results'][i]['codigoProducto']).first()
+                 
+        response.data = data
+        return Response(response.data)
+                    
     @jwt_required
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
