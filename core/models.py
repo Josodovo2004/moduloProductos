@@ -94,7 +94,7 @@ class Item(models.Model):
     tipoPrecio = models.ForeignKey(TipoPrecio, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.TextField(max_length=200, null=True)
-    valorUnitario = models.IntegerField(null=False)
+    valorUnitario = models.FloatField(null=False)
     codigoProducto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, null=True)
     stock = models.IntegerField(null=False)
     peso = models.FloatField(null=True)
