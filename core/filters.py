@@ -96,8 +96,15 @@ class ItemImpuestoFilter(filters.FilterSet):
     item = filters.NumberFilter(field_name='item__id')  # Filtering by item ID
     impuesto = filters.NumberFilter(field_name='impuesto__id')  # Filtering by impuesto ID
     porcentaje = filters.NumberFilter()  # Exact match for porcentaje
-    afectacion = filters.NumberFilter(field_name='afectacion__id', null_value='null')  # Filtering by afectacion ID
+    afectacion = filters.NumberFilter(field_name='afectacion__id')  # Filtering by afectacion ID
+
+    # Filter for NULL values in afectacion
+    afectacion_isnull = filters.BooleanFilter(
+        field_name='afectacion',
+        lookup_expr='isnull',
+        label='Afectacion is NULL'
+    )
 
     class Meta:
         model = ItemImpuesto
-        fields = ['item', 'impuesto', 'porcentaje', 'afectacion']
+        fields = ['item', 'impuesto', 'porcentaje', 'afectacion', 'afectacion_isnull']

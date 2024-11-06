@@ -142,6 +142,8 @@ class ItemListCreateView(generics.ListCreateAPIView):
                     data['results'][i]['tipoPrecio'] = TipoPrecioSerializer(item.tipoPrecio).data
                     data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
                     data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
+                    
+                    listaImpuestos = ItemImpuesto.objects.filter()
                  
         response.data = data
         return Response(response.data)
