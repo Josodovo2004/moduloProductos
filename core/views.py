@@ -131,28 +131,6 @@ class ItemListCreateView(generics.ListCreateAPIView):
     permission_classes = []
     filter_backends = [DjangoFilterBackend]
     filterset_class = ItemFilter
-    
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        data = response.data
-        if 'respuesta_simple' not in request.data:
-            for i in range(len(data['results'])):
-                if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
-                    item = self.get_queryset().filter(id=data['results'][i]['id']).first()
-                    item: Item
-                    if item:
-                        data['results'][i]['unidadMedida'] = UnidadMedidaSerializer(item.unidadMedida).data
-                        data['results'][i]['tipoPrecio'] = TipoPrecioSerializer(item.tipoPrecio).data
-                        data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
-                        data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
-                        
-                        listaImpuestos = ItemImpuesto.objects.filter(item= item.id).first()
-                        if listaImpuestos:
-                            serializedImpuestos = ModifiedItemImpuestoSerializer(listaImpuestos).data
-                            data['results'][i]['taxes'] = serializedImpuestos
-                 
-        response.data = data
-        return Response(response.data)
                     
     @jwt_required
     def post(self, request, *args, **kwargs):
