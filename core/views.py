@@ -136,7 +136,7 @@ class ItemListCreateView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
     
-class CustomItemListView(generics.ListAPIView):
+class CustomItemListView(generics.ListAPIView):  # Change to ListAPIView for list functionality
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     authentication_classes = [CustomJWTAuthentication]
@@ -144,26 +144,34 @@ class CustomItemListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ItemFilter
     
+    def get_queryset(self):
+        # Get `ids` from query params
+        ids = self.request.query_params.get('ids')
+        if ids:
+            ids = ids.split(',')
+            return self.queryset.filter(id__in=ids)
+        return self.queryset
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         data = response.data
         for i in range(len(data['results'])):
             if isinstance(data['results'][i], dict) and 'id' in data['results'][i]:
                 item = self.get_queryset().filter(id=data['results'][i]['id']).first()
-                item: Item
                 if item:
                     data['results'][i]['unidadMedida'] = UnidadMedidaSerializer(item.unidadMedida).data
                     data['results'][i]['tipoPrecio'] = TipoPrecioSerializer(item.tipoPrecio).data
                     data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
                     data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
                     
-                    listaImpuestos = ItemImpuesto.objects.filter(item= item.id).first()
+                    listaImpuestos = ItemImpuesto.objects.filter(item=item.id).first()
                     if listaImpuestos:
                         serializedImpuestos = ModifiedItemImpuestoSerializer(listaImpuestos).data
                         data['results'][i]['taxes'] = serializedImpuestos
                  
         response.data = data
         return Response(response.data)
+
                     
 
 
