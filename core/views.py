@@ -164,9 +164,9 @@ class CustomItemListView(generics.ListAPIView):  # Change to ListAPIView for lis
                     data['results'][i]['categoria'] = CategoriaSerializer(item.categoria).data
                     data['results'][i]['codigoProducto'] = ProductoSerializer(item.codigoProducto).data
                     
-                    listaImpuestos = ItemImpuesto.objects.filter(item=item.id).first()
+                    listaImpuestos = ItemImpuesto.objects.filter(item=item.id)
                     if listaImpuestos:
-                        serializedImpuestos = ModifiedItemImpuestoSerializer(listaImpuestos).data
+                        serializedImpuestos = ModifiedItemImpuestoSerializer(listaImpuestos, many=True).data
                         data['results'][i]['taxes'] = serializedImpuestos
                  
         response.data = data
