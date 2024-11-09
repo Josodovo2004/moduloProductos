@@ -160,8 +160,8 @@ class CustomItemListView(generics.ListAPIView):  # Change to ListAPIView for lis
                 item = self.get_queryset().filter(id=data['results'][i]['id']).first()
                 if item:
                     for value in request.data["items"]:
-                        if value[0] == data['results'][i]["id"]:
-                            data['results'][i]['cantidad'] = value[1]
+                        if value["id"] == data['results'][i]["id"]:
+                            data['results'][i]['cantidad'] = value["quantity"]
                             break
                     data['results'][i]['unidadMedida'] = UnidadMedidaSerializer(item.unidadMedida).data
                     data['results'][i]['tipoPrecio'] = TipoPrecioSerializer(item.tipoPrecio).data
