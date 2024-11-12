@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import environ
-from .awsData import sharedKey, dbEngine, nameDb, passwordDb, userDb, hostDb, portDb 
+from .awsData import sharedKey, passwordDb
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,12 +92,12 @@ WSGI_APPLICATION = 'ModuloProductos.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": dbEngine,
-        "NAME": nameDb,
-        "USER": userDb,
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": 'ModuloProductos',
+        "USER": 'postgres',
         "PASSWORD": passwordDb,
         "HOST": 'db',
-        "PORT": portDb,
+        "PORT": '5432',
     }
 }
 
