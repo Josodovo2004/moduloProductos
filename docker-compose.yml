@@ -21,9 +21,13 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    restart: always
 
   web:
-    build: .
+    build:
+      context: .
+      labels:
+        - "project=ModuloProductos"
     command: >
       bash -c "python manage.py migrate && 
                python manage.py import_segmento &&
@@ -44,6 +48,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    restart: always
 
 volumes:
   postgres_data:
