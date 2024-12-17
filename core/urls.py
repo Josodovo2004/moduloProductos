@@ -26,6 +26,7 @@ from .views import (
     resumenItems,
     ajustarStock,
     GeneratePresignedUrlView,
+    Catalogo05ListView,
 )
 
 urlpatterns = [
@@ -50,6 +51,8 @@ urlpatterns = [
     path('items/', ItemListCreateView.as_view(), name='item-list-create'),
     path('items/<pk>/', ItemRetrieveUpdateDestroyView.as_view(), name='item-detail'),
     path('custom-item-view/', CustomItemListView.as_view(), name='custom-item-view'),
+    
+    path('impuestos/', Catalogo05ListView.as_view(), name='impuesto-list-view'),
 
     path('item-impuesto/', ItemImpuestoListCreateView.as_view(), name='item-tax-list-create'),
     path('item-impuesto/<pk>/', ItemImpuestoRetrieveUpdateDestroyView.as_view(), name='item-tax-detail'),

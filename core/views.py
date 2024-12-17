@@ -1,5 +1,5 @@
 from rest_framework import generics # type: ignore
-from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, ItemImpuesto, Categoria, ConjuntoItem, Conjunto
+from .models import SegmentoProducto, FamiliaProducto, ClaseProducto, Producto, TipoPrecio, UnidadMedida, Item, ItemImpuesto, Categoria, ConjuntoItem, Conjunto, Catalogo05TiposTributos
 from .serializers import (
     SegmentoProductoSerializer,
     FamiliaProductoSerializer,
@@ -12,7 +12,8 @@ from .serializers import (
     CategoriaSerializer,
     ConjuntoItemSerializer,
     ConjuntoSerializer,
-    ModifiedItemImpuestoSerializer
+    ModifiedItemImpuestoSerializer,
+    Catalogo05TiposTributosSerializer,
 )
 from ModuloProductos.decorators import CustomJWTAuthentication
 from ModuloProductos.decorators import jwt_required
@@ -27,7 +28,6 @@ from .filters import (
     UnidadMedidaFilter, 
     CategoriaFilter,
     ItemImpuestoFilter,
-    
     )
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view # type: ignore
@@ -173,6 +173,11 @@ class CustomItemListView(generics.ListAPIView):  # Change to ListAPIView for lis
         return Response(response.data)
 
                     
+
+class Catalogo05ListView(generics.ListAPIView):
+    queryset = Catalogo05TiposTributos.objects.all()
+    serializer_class = Catalogo05TiposTributosSerializer
+    
 
 
 class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
